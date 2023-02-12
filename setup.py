@@ -14,7 +14,8 @@ def read(filename):
 
 requirements = [
     "numpy",
-    "pandas",    
+    "pandas",
+    "seaborn",
     "sentence-transformers",
     "recordlinkage",
     "scikit-learn",
@@ -24,13 +25,13 @@ requirements = [
 ]
 
 setup(
-    name="pyentlink",
+    name="pyent",
     version="0.0.1",
     url="",
     license='MIT',
     author="Mustafa Waheed",
     author_email="mustafawaheed2013@u.northwestern.edu",
-    description="A transformer based deep learning model to match entities from different data sources.",
+    description="A transformer architecture based deep learning model to resolve real world entities from different data sources",
     long_description=read("README.md"),
     packages=find_packages(exclude=('tests',)),
     # entry_points={

@@ -1,10 +1,12 @@
+from typing import Tuple
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import recordlinkage as rl
 from recordlinkage.datasets import load_febrl4
 
 
-def generate_febrl_data(block_col: str ="surname", init_seed: int =0) -> pd.DataFrame:
+def generate_febrl_data(block_cols: Tuple[str] =("given_name", "surname"), init_seed: int =0) -> pd.DataFrame:
     """geerate person entity duplicates
 
     args:
@@ -46,7 +48,7 @@ def generate_febrl_data(block_col: str ="surname", init_seed: int =0) -> pd.Data
     dfA, dfB = load_febrl4()
 
     indexer = rl.Index()
-    indexer.block(block_col)
+    indexer.block(block_cols[1])
     candidate_links = indexer.index(dfA, dfB)
 
     df_clinks = pd.DataFrame(index=candidate_links)

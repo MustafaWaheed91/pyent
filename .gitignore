@@ -105,3 +105,6 @@ ENV/
 .idea/
 __MACOSX/
 .DS_Store/
+
+models/
+data/

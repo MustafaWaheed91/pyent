@@ -133,5 +133,22 @@ def train_test_validate_stratified_split(features, targets, test_size=0.1, valid
     return features_train, features_test, features_validate, targets_train, targets_test, targets_validate
 
 
+def sample_xy(X: pd.DataFrame ,y: pd.Series, num: int =None)-> Tuple[pd.DataFrame, pd.Series]:
+    """sample any df or series by record count and series val
+    """
+    X_df = X.copy()
+    y_df = pd.DataFrame(index=y.index, data=y).copy()
+    
+    lab_lst = []
+    lab_set = list(set(y.tolist()))
+    for lab in lab_set:
+        lab_lst.append(y_df[y_df[y_df.columns[0]]==lab].sample(n=num))
+    
+    y_sample_df = pd.concat(lab_lst, ignore_index=False)
+    X_sample_df = X_df.loc[y_sample_df.index, :]
+    
+    return X_sample_df , y_sample_df
+
+
 if __name__ == "__main__":
     remove_nan(generate_febrl_data())

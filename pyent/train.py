@@ -1,10 +1,13 @@
 import os
 from math import ceil
 import logging
+from typing import Any
 from datetime import datetime
+import json
 
 import numpy as np
 import pandas as pd
+from torch.cuda import is_available, is_initialized
 from torch.utils.data import DataLoader
 from sentence_transformers import losses
 from sentence_transformers import LoggingHandler, SentenceTransformer, evaluation
@@ -12,7 +15,7 @@ from sentence_transformers.readers import InputExample
 
 
 def train_txt_baseline(X_train_txt: pd.DataFrame, y_train: pd.Series, 
-    X_test_txt: pd.DataFrame, y_test: pd.Series, X_val_txt: pd.DataFrame, y_val: pd.Series) -> None:
+    X_test_txt: pd.DataFrame, y_test: pd.Series, X_val_txt: pd.DataFrame, y_val: pd.Series, **kwargs) -> None:
     """train baseline sentence transformer model 
     """
     # prepare data splits for algorithm
@@ -125,12 +128,13 @@ def train_txt_baseline(X_train_txt: pd.DataFrame, y_train: pd.Series,
         train_objectives=[(train_dataloader, train_loss)],
         evaluator=seq_evaluator,
         epochs=num_epochs,
-        use_amp=True,
+        use_amp=True if is_initialized() and is_available() else False,
         warmup_steps=ceil(len(train_dataloader)*0.1),
         output_path=model_save_path,
         show_progress_bar=True
     )
 
+    logger.info("Evaluate model performance on test set")
     bi_encoder = SentenceTransformer(model_save_path)
 
     test_sentence_l = X_test_txt.sentence_l.tolist()
@@ -147,9 +151,6 @@ def train_txt_baseline(X_train_txt: pd.DataFrame, y_train: pd.Series,
         show_progress_bar=True
     )
 
-    logger.info("Evaluate model performance on test set")
+    
     test_pref_metrics = test_eval.compute_metrices(bi_encoder)
-    acc, acc_threshold = test_eval(bi_encoder).find_best_acc_and_threshold()
-    f1, precision, recall, f1_threshold = test_eval(bi_encoder).find_best_f1_and_threshold()
-
-    logger.info(f"The performance on the test set included\nAccuracy: {acc} for Threshold {acc_threshold}\nF1 Score: {f1} with Percision: {precision} and Recall {recall} for Threshold {f1_threshold}")
+    logger.info(f"Test Performance Metrics:\n{json.dumps(test_pref_metrics['cossim'], indent=4)}")

@@ -16,12 +16,16 @@ requirements = [
     "numpy",
     "pandas",
     "seaborn",
-    "sentence-transformers",
+    "datasets",
+    "tokenizers",
+    "sentence_transformers",
     "recordlinkage",
     "scikit-learn",
     "jupyter",
     "tqdm",
     "ipywidgets",
+    "matplotlib",
+    "xgboost==1.4.2"
 ]
 
 setup(

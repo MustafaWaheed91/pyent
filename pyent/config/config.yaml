@@ -1,0 +1,19 @@
+
+features: 
+  text: 
+    - given_name
+    - surname
+    - address_1
+    - address_2
+    - zip_code
+  numeric:
+    - date_of_birth
+  catagory:
+    - state
+    - soc_sec_id
+model_params:
+  model_name: bert-base-uncased
+  num_epochs: 1
+  train_batch_size: 64
+  test_batch_size: 32
+  margin: 0.5

@@ -14,5 +14,3 @@ This module is meant to provide tooling and abstractions as well as examples of 
 
 
 ----
-  
-e

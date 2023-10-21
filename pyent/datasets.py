@@ -1,16 +1,17 @@
 from typing import Tuple
 
 import pandas as pd
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GroupShuffleSplit
 import recordlinkage as rl
 from recordlinkage.datasets import load_febrl4
 
 
-def generate_febrl_data(block_cols: Tuple[str] =("given_name", "surname"), init_seed: int =0) -> pd.DataFrame:
+def generate_febrl_data(block_cols: Tuple[str] = ("given_name", "surname"), init_seed: int = 0) -> pd.DataFrame:
     """geerate person entity duplicates
 
-    args:
-        block_col (str): the column name in the data set that you'd want to block on   
+        :param block_col (str): the column name in the data set that you'd want to block on
+
+        :returns pandas.DataFrame: this is the concatenated datafrane of candidate pairs
     """
     # postive class for target
     dfL, dfR, df_links = load_febrl4(return_links=True)
@@ -113,7 +114,8 @@ def remove_nan(master_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def train_test_validate_stratified_split(features, targets, test_size=0.1, validate_size=0.2):
-    """split data into dev and test set
+    """
+        split data into dev (i.e. train and validate) and a test set to hold out.
     """
     # Get test sets
     features_train, features_test, targets_train, targets_test = train_test_split(
@@ -122,6 +124,7 @@ def train_test_validate_stratified_split(features, targets, test_size=0.1, valid
         stratify=targets,
         test_size=test_size
     )
+
     # Run train_test_split again to get train and validate sets
     post_split_validate_size = validate_size / (1 - test_size)
     features_train, features_validate, targets_train, targets_validate = train_test_split(
@@ -133,8 +136,16 @@ def train_test_validate_stratified_split(features, targets, test_size=0.1, valid
     return features_train, features_test, features_validate, targets_train, targets_test, targets_validate
 
 
-def sample_xy(X: pd.DataFrame ,y: pd.Series, num: int =None)-> Tuple[pd.DataFrame, pd.Series]:
-    """sample any df or series by record count and series val
+def sample_xy(X: pd.DataFrame ,y: pd.Series, num: int = None) -> Tuple[pd.DataFrame, pd.Series]:
+    """
+        sample any df or series by record count and series val
+
+        :param X pandas.DataFrame: this is the dataframe of features
+        :param y pandas.Series: this is the column representing the target
+        :param num int: this is an integer that  
+
+        :returns Tuple[pandas.DataFrame, pandas.DataFrame]: this is the 2 
+            dataframes of features and targets for training.
     """
     X_df = X.copy()
     y_df = pd.DataFrame(index=y.index, data=y).copy()

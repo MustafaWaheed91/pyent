@@ -30,7 +30,7 @@ The over all pipeline will look something like the **3.**'rd option detailed in 
 
 ### 2. Bi-Encoder: Candidate Pair Selection
 
-First we will aim to retireve top _k_ similar candidates to Entityes in Set _i_ such  
+First we will aim to retireve top _k_ similar candidates to Entities in Set _i_ such  
   
 $$  E_{pair} = (E^{i} , E^{j})  $$
 $$   \ where \ D( E^{i1}, E^{i2} ) \ge D(E^{i}, E^{k})  $$

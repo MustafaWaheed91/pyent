@@ -1,8 +1,4 @@
 # PyEnt: 
-<script
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-  type="text/javascript">
-</script>
   
 Author: _Mustafa Waheed (Data Scientist)_
 
@@ -27,13 +23,7 @@ The over all pipeline will look something like the **3.**'rd option detailed in 
 ### 1. Preprocess and Split Dataset  
   
    
-
 ### 2. Bi-Encoder: Candidate Pair Selection
-
-First we will aim to retireve top _k_ similar candidates to Entities in Set _i_ such  
-  
-$$  E_{pair} = (E^{i} , E^{j})  $$
-$$   \ where \ D( E^{i1}, E^{i2} ) \ge D(E^{i}, E^{k})  $$
     
 
 ### 3. Cross Encoder : Entity Match Classification 

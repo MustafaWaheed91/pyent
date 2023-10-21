@@ -5,12 +5,14 @@ import pandas as pd
 
 def generate_textual_features(X: pd.DataFrame, lr_dict: Optional[Dict[str,List[str]]] = None, ) -> pd.DataFrame:
     """collect text attributes into two sentences
-    params:
-        X (pd.DataFrame): 
-        lr_dict (dict): a dict with keys sentence_l and sentence_r and values being a list of column names (default: None)
-    return:
-        pd.DataFrame
-    
+        :params X (pd.DataFrame): 
+            a dataframe for features
+        :param lr_dict (dict): 
+            a dict with keys sentence_l and sentence_r and values being a list of column names (default: None)
+
+        :returns pandas.DataFrame:
+
+    .. Example Usage:
     ----- example argument ------
     lr_dict = {
         "sentence_l": ["given_name_l", "surname_l", "street_number_l"],

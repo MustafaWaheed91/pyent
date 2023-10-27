@@ -25,7 +25,8 @@ requirements = [
     "tqdm",
     "ipywidgets",
     "matplotlib",
-    "xgboost==1.4.2"
+    "xgboost==1.4.2",
+    "dask[complete]"
 ]
 
 setup(

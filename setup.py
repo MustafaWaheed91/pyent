@@ -15,18 +15,25 @@ def read(filename):
 requirements = [
     "numpy",
     "pandas",
-    "seaborn",
+    "seaborn",    
+    "torch>=1.6.0",
+    "torchvision",
     "datasets",
     "tokenizers",
     "sentence_transformers",
     "recordlinkage",
     "scikit-learn",
+    "scipy",
+    "nltk",
+    "sentencepiece",
+    "huggingface-hub",    
     "jupyter",
     "tqdm",
     "ipywidgets",
     "matplotlib",
     "xgboost==1.4.2",
-    "dask[complete]"
+    "dask[complete]",
+    "pydantic"
 ]
 
 setup(

@@ -1,10 +1,8 @@
-# PyEnt: 
   
+<script>src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"</script>
+<script>type="text/javascript"</script>
 
-<script
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-  type="text/javascript">
-</script>
+# PyEnt: 
 
   
 Author: _Mustafa Waheed (Data Scientist)_

@@ -6,10 +6,14 @@ import recordlinkage as rl
 from recordlinkage.datasets import load_febrl4
 
 
-def generate_febrl_data(block_cols: Tuple[str] = ("given_name", "surname"), init_seed: int = 0) -> pd.DataFrame:
-    """geerate person entity duplicates
+def generate_febrl_data(block_cols: Tuple[str] = ("given_name", "surname"), init_seed: int = 42) -> pd.DataFrame:       
+    """
+        Generate person entity duplicates. This returns a tuple of 2 data frames and an index i.e.
+        (pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.indexes.multi.MultiIndex)
 
-        :param block_col (str): the column name in the data set that you'd want to block on
+        :param block_col (str): The column name in the data set that you'd want to block on
+        :param init_seed (int): Integer representing the seed initialization for 
+            Random Variables :default 42
 
         :returns pandas.DataFrame: this is the concatenated datafrane of candidate pairs
     """

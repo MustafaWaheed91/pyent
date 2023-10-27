@@ -1,0 +1,2 @@
+recursive-include pyent/config/ *.yaml
+recursive-include pyent/config/ *.json

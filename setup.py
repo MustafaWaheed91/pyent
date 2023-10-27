@@ -26,7 +26,8 @@ requirements = [
     "ipywidgets",
     "matplotlib",
     "xgboost==1.4.2",
-    "dask[complete]"
+    "dask[complete]",
+    "pydantic"
 ]
 
 setup(

@@ -115,6 +115,7 @@ def remove_nan(master_df: pd.DataFrame) -> pd.DataFrame:
         "postcode_r",
     ]
     master_df_nona = master_df.dropna(subset=drop_check_subset)
+    master_df_nona = master_df_nona.reset_index()
     print(f"After Dropping NaN's shape of data is {master_df_nona.shape}")
     return master_df_nona
 
@@ -154,7 +155,7 @@ def sample_xy(X: pd.DataFrame, y: pd.Series, num: int | None = None) -> Tuple[An
     """
         sample any df or series by record count and series val
 
-        :param num: this is an integer that
+        :param num: this is an integer for the number of rows to sample from the constituent sets
         :param y: this is the column representing the target
         :param X: this is the dataframe of features
 

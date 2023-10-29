@@ -1,7 +1,6 @@
 import os
 from math import ceil
 import logging
-from typing import Any
 from datetime import datetime
 import json
 
@@ -13,7 +12,6 @@ from sentence_transformers import losses
 from sentence_transformers import LoggingHandler, SentenceTransformer, evaluation
 from sentence_transformers.readers import InputExample
 
-
 logging.basicConfig(
     format='%(asctime)s - %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
@@ -23,8 +21,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def train_txt_baseline(X_train_txt: pd.DataFrame, y_train: pd.Series, 
-    X_test_txt: pd.DataFrame, y_test: pd.Series, X_val_txt: pd.DataFrame, y_val: pd.Series, **kwargs) -> None:
+def train_txt_baseline(X_train_txt: pd.DataFrame, y_train: pd.Series,
+                       X_test_txt: pd.DataFrame, y_test: pd.Series, X_val_txt: pd.DataFrame, y_val: pd.Series,
+                       **kwargs) -> None:
     """train baseline sentence transformer model 
     """
     try:
@@ -32,15 +31,15 @@ def train_txt_baseline(X_train_txt: pd.DataFrame, y_train: pd.Series,
         X_train_txt['target'] = np.where(y_train == "match", 1, 0)
         X_test_txt['target'] = np.where(y_test == "match", 1, 0)
         X_val_txt['target'] = np.where(y_val == "match", 1, 0)
-        
-        # # paraneters abd configs for training
+
+        # # parameters abd configs for training
         # model_name = 'bert-base-uncased'
         # num_epochs = 1
         # train_batch_size = 64
         # margin = 0.5
 
         model_save_path = '../output/models/{}-bsz-{}-ep-{}-{}'.format(
-            kwargs["model_name"], 
+            kwargs["model_name"],
             kwargs["train_batch_size"],
             kwargs["num_epochs"],
             datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -51,23 +50,23 @@ def train_txt_baseline(X_train_txt: pd.DataFrame, y_train: pd.Series,
 
         # create train and test sample
         train_samples = []
-        for row in  X_train_txt.iterrows():
+        for row in X_train_txt.iterrows():
             if row[1]['target'] == 1:
                 train_samples.append(
                     InputExample(
                         texts=[
-                            row[1]['sentence_l'], 
+                            row[1]['sentence_l'],
                             row[1]['sentence_r']
-                        ], 
+                        ],
                         label=int(row[1]['target'])
                     )
                 )
                 train_samples.append(
                     InputExample(
                         texts=[
-                            row[1]['sentence_r'], 
+                            row[1]['sentence_r'],
                             row[1]['sentence_l']
-                        ], 
+                        ],
                         label=int(row[1]['target'])
                     )
                 )
@@ -75,32 +74,32 @@ def train_txt_baseline(X_train_txt: pd.DataFrame, y_train: pd.Series,
                 train_samples.append(
                     InputExample(
                         texts=[
-                            row[1]['sentence_l'], 
+                            row[1]['sentence_l'],
                             row[1]['sentence_r']
-                        ], 
+                        ],
                         label=int(row[1]['target'])
                     )
                 )
 
         # create train and test sample
         dev_samples = []
-        for row in  X_val_txt.iterrows():
+        for row in X_val_txt.iterrows():
             if row[1]['target'] == 1:
                 dev_samples.append(
                     InputExample(
                         texts=[
-                            row[1]['sentence_l'], 
+                            row[1]['sentence_l'],
                             row[1]['sentence_r']
-                        ], 
+                        ],
                         label=int(row[1]['target'])
                     )
                 )
                 dev_samples.append(
                     InputExample(
                         texts=[
-                            row[1]['sentence_r'], 
+                            row[1]['sentence_r'],
                             row[1]['sentence_l']
-                        ], 
+                        ],
                         label=int(row[1]['target'])
                     )
                 )
@@ -108,23 +107,24 @@ def train_txt_baseline(X_train_txt: pd.DataFrame, y_train: pd.Series,
                 dev_samples.append(
                     InputExample(
                         texts=[
-                            row[1]['sentence_l'], 
+                            row[1]['sentence_l'],
                             row[1]['sentence_r']
-                        ], 
+                        ],
                         label=int(row[1]['target'])
                     )
                 )
 
         # initialize data loader and loss definition
+        # noinspection PyTypeChecker
         train_dataloader = DataLoader(
-            train_samples, 
-            shuffle=True, 
+            train_samples,
+            shuffle=True,
             batch_size=kwargs["train_batch_size"]
         )
 
         train_loss = losses.OnlineContrastiveLoss(
-            model=model, 
-            distance_metric=distance_metric, 
+            model=model,
+            distance_metric=distance_metric,
             margin=kwargs["margin"]
         )
 
@@ -139,13 +139,13 @@ def train_txt_baseline(X_train_txt: pd.DataFrame, y_train: pd.Series,
 
         logger.info("Evaluate model without training")
         seq_evaluator = evaluation.SequentialEvaluator(
-            evaluators=evaluators, 
+            evaluators=evaluators,
             main_score_function=lambda scores: scores[-1]
         )
         seq_evaluator(
-            model=model, 
-            epoch=0, 
-            steps=0, 
+            model=model,
+            epoch=0,
+            steps=0,
             output_path=model_save_path
         )
 
@@ -155,7 +155,7 @@ def train_txt_baseline(X_train_txt: pd.DataFrame, y_train: pd.Series,
             evaluator=seq_evaluator,
             epochs=kwargs["num_epochs"],
             use_amp=True if is_initialized() and is_available() else False,
-            warmup_steps=ceil(len(train_dataloader)*0.1),
+            warmup_steps=ceil(len(train_dataloader) * 0.1),
             output_path=model_save_path,
             show_progress_bar=True
         )
@@ -176,7 +176,7 @@ def train_txt_baseline(X_train_txt: pd.DataFrame, y_train: pd.Series,
             write_csv=True,
             show_progress_bar=True
         )
-        
+
         test_pref_metrics = test_eval.compute_metrices(bi_encoder)
         logger.info(f"Test Performance Metrics:\n{json.dumps(test_pref_metrics['cossim'], indent=4)}")
     except Exception as e:

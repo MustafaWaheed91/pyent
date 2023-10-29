@@ -12,10 +12,11 @@ def read(filename):
     with io.open(filename, mode="r", encoding='utf-8') as fd:
         return re.sub(text_type(r':[a-z]+:`~?(.*?)`'), text_type(r'``\1``'), fd.read())
 
+
 requirements = [
     "numpy",
     "pandas",
-    "seaborn",    
+    "seaborn",
     "torch>=1.6.0",
     "torchvision",
     "datasets",
@@ -26,7 +27,7 @@ requirements = [
     "scipy",
     "nltk",
     "sentencepiece",
-    "huggingface-hub",    
+    "huggingface-hub",
     "jupyter",
     "tqdm",
     "ipywidgets",
@@ -43,8 +44,8 @@ setup(
     license='MIT',
     author="Mustafa Waheed",
     author_email="mustafawaheed2013@u.northwestern.edu",
-    description="A transformer architecture based deep learning model to resolve real world entities from different data sources",
     long_description=read("README.md"),
+    description="A transformer architecture based deep learning model to resolve real world entities in data sources",
     packages=find_packages(exclude=('tests',)),
     # entry_points={
     #     'console_scripts': [
@@ -54,6 +55,6 @@ setup(
     install_requires=requirements,
     classifiers=[
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.8'
+        'Programming Language :: Python :: 3.11'
     ],
 )
